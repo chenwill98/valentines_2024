@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Pratyusha</title>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon"> 
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.cdnfonts.com/css/romantic" rel="stylesheet">
+</head>
+<body>
+    <div class="background"></div>
+    <div>
+        <h1 id="header">Pratyusha, will you be my Valentine?</h1>
+        <div>
+            <button class="yesButton" id="yesButton">Yes 🥰</button>
+            <button class="noButton" id="noButton">No 🥺</button>
+        </div>
+        <div class="gifContainer" id="gifContainer" style="display: none;">
+            <img id="gif" src="/images/love.gif" alt="Loading..." class="centeredGif" id="loadingGif">
+        </div>
+    </div>
+</body>
+
+    <script>
+        const emojiSets = {
+            yes: ['❤️', '🥰', '😘', '😘', '💕', '😻', '💗', '💖', '😳', '💝'],
+            no: ['😭', '😢', '😥', '😿']
+        };
+        const gifList = []
+
+        let yesInterval, noInterval;
+        var header = document.getElementById('header')
+        var yesButton = document.getElementById('yesButton');
+        var noButton = document.getElementById('noButton');
+        var gifContainer = document.getElementById('gifContainer');
+        var gif = document.getElementById('gif');
+
+        function dropEmoji(emojiSet) {
+            const emoji = document.createElement('div');
+            emoji.classList.add('emoji');
+            emoji.textContent = emojiSet[Math.floor(Math.random() * emojiSet.length)];
+            document.body.appendChild(emoji);
+
+            // Randomize the starting position
+            emoji.style.left = `${Math.random() * window.innerWidth}px`;
+
+            // Remove emoji after animation to clean up the DOM
+            emoji.addEventListener('animationend', () => {
+                emoji.remove();
+            });
+        }
+
+        function shrinkButton() {
+            var noButtonStyle = window.getComputedStyle(noButton);
+            var yesButtonStyle = window.getComputedStyle(yesButton);
+
+            var changeFactor = 10;
+
+            noButton.style.fontSize = parseFloat(noButtonStyle.fontSize) - changeFactor * 0.5 + 'px';
+            noButton.style.width = parseFloat(noButtonStyle.width) - changeFactor * 4 + 'px';
+            noButton.style.height = parseFloat(noButtonStyle.height) - changeFactor * 2 + 'px';
+
+            yesButton.style.fontSize = parseFloat(yesButtonStyle.fontSize) + changeFactor * 0.5 + 'px';
+            yesButton.style.width = parseFloat(yesButtonStyle.width) + changeFactor * 4 + 'px';
+            yesButton.style.height = parseFloat(yesButtonStyle.height) + changeFactor * 2 + 'px';
+
+            if (parseFloat(noButtonStyle.fontSize) <= 5) {
+                noButton.style.display = "none";
+                noButton.disabled = true;
+                clearInterval(noInterval);
+            }
+        }
+        function handleYesClick() {
+            // Hide title and buttons
+            header.textContent = "You're my Valentine 🥰🥰🥰";
+            yesButton.style.display = "none";
+            noButton.style.display = "none";
+
+            // Show GIF container
+            gifContainer.style.display = "block";
+            yesInterval = startEmojiRain(emojiSets.yes);
+        }
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function startEmojiRain(emojiSet) {
+            return setInterval(() => dropEmoji(emojiSet), 100);
+        }
+
+        yesButton.addEventListener('mouseenter', () => {
+            yesInterval = startEmojiRain(emojiSets.yes);
+        });
+        yesButton.addEventListener('mouseleave', () => {
+            clearInterval(yesInterval);
+        });
+        yesButton.addEventListener('click', function() {
+            handleYesClick();
+        });
+
+        noButton.addEventListener('mouseenter', () => {
+            noInterval = startEmojiRain(emojiSets.no);
+        });
+        noButton.addEventListener('mouseleave', () => {
+            clearInterval(noInterval);
+        });
+        noButton.addEventListener('click', function() {
+            shrinkButton();
+        });
+
+        gif.addEventListener('click', function() {
+            totalImages = 15
+            // Generate a random number between 1 and totalImages
+            const randomImageNumber = getRandomInt(1, totalImages);
+            
+            // Construct the filename based on the random number
+            const imagePath = 'gifs/' + randomImageNumber + '.gif';
+            
+            // Update the image source
+            gif.src = imagePath;
+        });
+
+        
+    </script>
+
+</body>
+</html>
