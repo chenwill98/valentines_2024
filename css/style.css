@@ -17,7 +17,7 @@ body {
     position: absolute; 
     height: 100%; 
     width: 100%; 
-    background-image: url("valentines_2024/images/background.webp");
+    background-image: url("images/0.webp");
     background-size: cover; 
     background-position: center; 
     filter: blur(15px); 
